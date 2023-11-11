@@ -31,6 +31,12 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+FactoryMethod.UnitTests/bin/
+FactoryMethod.UnitTests/obj/
+
+FactoryMethodWithTests/.vs/
+FactoryMethodWithTests/bin/
+FactoryMethodWithTests/obj/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

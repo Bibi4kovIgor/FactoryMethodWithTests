@@ -39,30 +39,30 @@ public class SqlDbCommand<T, Key> : IDbCommand<T, Key> where T : new()
         return connection.Execute($"Update {GetTableName()} SET{ForUpdateColumns(newData)} where {GetKey} = {GetValue(key)}") > 0;                
     }
 
-    private string GetTableName() {
+    protected string GetTableName() {
         return typeof(T).Name; 
     }
 
-    private string GetInsertColumns(T data)
+    protected string GetInsertColumns(T data)
     {
         Type type = typeof(T);
         var columns = type.GetProperties().Where(p => p.Name != GetKey);
         return $"({string.Join(',', columns.Select(p => p.Name))}) values ({string.Join(',', columns.Select(p => p.GetValue(data)))})";
     }
-    private string ForUpdateColumns(T data)
+    protected string ForUpdateColumns(T data)
     {
         Type type = typeof(T);
         var columns = type.GetProperties().Where(p => p.Name != GetKey);
         return $"{string.Join(',', columns.Select(p => $" {p.Name} = {GetValue(data, p)}"))}";
     }
 
-    private static object? GetValue(T data, PropertyInfo p)
+    protected static object? GetValue(T data, PropertyInfo p)
     {
         return p.PropertyType == typeof(Guid) 
             || p.PropertyType == typeof(string)
             ? $"'{p.GetValue(data)}'" : p.GetValue(data);
     }
-    private static object? GetValue(Key key)
+    protected static object? GetValue(Key key)
     {
         return typeof(Key) == typeof(Guid)
             || typeof(Key) == typeof(string)

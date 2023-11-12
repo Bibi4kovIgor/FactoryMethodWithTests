@@ -7,4 +7,3 @@ public interface IConnection
     T Execute<T>(string command);
     Task<T> ExecuteAsync<T>(string command) where T : new();
 }
-

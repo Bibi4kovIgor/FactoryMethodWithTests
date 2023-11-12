@@ -8,6 +8,7 @@ public class SqlConnectionTests
 {    
     const string SQL_CONNECT_STRING = "DB_SQL://sql.url";
     const string SQL_COMMAND = "Insert command string";
+
     SqlConnection sqlConnection;
     Mock<ILogger> loggerMock;
 

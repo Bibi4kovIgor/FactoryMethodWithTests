@@ -22,17 +22,21 @@ public class SqlDbCommandTest
 
     [Fact]
     public void Update_ExecuteUpdateCommand_UpdateTableRow() {
-        string UPDATE_COMMAND = $"Update Address SET Uuid = '{uuid}', City = '{CITY}', Street = '{STREET}' where id = '{uuid}'";
+        // Arrange
+        string expected = $"Update Address SET Uuid = '{uuid}', City = '{CITY}', Street = '{STREET}' where id = '{uuid}'";
         var sqldbCommand = new SqlDbCommand<Address, Guid>(connectionMock.Object);
 
+        // Act
         sqldbCommand.Update(uuid, new Address(uuid, CITY, STREET));
 
-        connectionMock.Verify(l => l.Execute(UPDATE_COMMAND), Times.Once);        
+        // Assert
+        connectionMock.Verify(l => l.Execute(expected), Times.Once);        
     }
 
     [Fact]
     public void GetAll_GetAllDataFromTable_ReturnsListWithRows() {       
-        connectionMock.Setup(c => c.Execute<List<Address>>(It.IsAny<string>())).Returns(new List<Address> { new Address(uuid, CITY, STREET) });
+        connectionMock.Setup(c => c.Execute<List<Address>>(It.IsAny<string>()))
+            .Returns(new List<Address> { new Address(uuid, CITY, STREET) });
         var expected = new List<Address> { new Address(uuid, CITY, STREET) };
         var sqldbCommand = new SqlDbCommand<Address, Guid>(connectionMock.Object);
 
@@ -43,7 +47,8 @@ public class SqlDbCommandTest
 
     [Fact]
     public async Task Get_GetDataFromTableByKey_ReturnsRow() {       
-        connectionMock.Setup(c => c.ExecuteAsync<Address>(It.IsAny<string>())).ReturnsAsync(new Address(uuid, CITY, STREET));
+        connectionMock.Setup(c => c.ExecuteAsync<Address>(It.IsAny<string>()))
+            .ReturnsAsync(new Address(uuid, CITY, STREET));
         var expected = new Address(uuid, CITY, STREET) ;
         var sqldbCommand = new SqlDbCommand<Address, Guid>(connectionMock.Object);
 
